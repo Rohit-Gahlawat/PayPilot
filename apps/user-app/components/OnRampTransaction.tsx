@@ -1,4 +1,7 @@
 import { Card } from "@repo/ui/card"
+import { OnRampStatusType } from "@repo/db";
+
+
 
 export const OnRampTransactions = ({
     transactions
@@ -6,8 +9,7 @@ export const OnRampTransactions = ({
     transactions: {
         time: Date,
         amount: number,
-        // TODO: Can the type of `status` be more specific?
-        status: string,
+        status: OnRampStatusType,
         provider: string
     }[]
 }) => {
