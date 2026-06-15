@@ -2,7 +2,6 @@
 "use client"
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
-import { Center } from "@repo/ui/center";
 import { Select } from "@repo/ui/select";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
@@ -13,7 +12,7 @@ const SUPPORTED_BANKS = [{
 }, {
 
     name: "Axis Bank",
-    redirectUrl: "https://www.axisbank.com/"
+    redirectUrl: "https://www.axisbank.com"
 }];
 
 export const AddMoney = () => {
@@ -23,7 +22,7 @@ export const AddMoney = () => {
             <TextInput label={"Amount"} placeholder={"Amount"} onChange={() => {
 
             }} />
-            <div className="py-4 text-left">
+            <div className="pb-1.5 pt-4 text-sm font-medium text-stone-700">
                 Bank
             </div>
             <Select onSelect={(value) => {
@@ -32,7 +31,7 @@ export const AddMoney = () => {
                 key: x.name,
                 value: x.name
             }))} />
-            <div className="flex justify-center pt-4">
+            <div className="pt-6">
                 <Button onClick={() => {
                     window.location.href = redirectUrl || "";
                 }}>

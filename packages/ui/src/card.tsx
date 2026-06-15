@@ -9,13 +9,11 @@ export function Card({
   children?: React.ReactNode;
 }): JSX.Element {
   return (
-    <div
-      className="border p-4"
-    >
-      <h1 className="text-xl border-b pb-2">
+    <div className="rounded-2xl border border-[#D9CFC7] bg-[#F9F8F6] p-5 shadow-sm transition-shadow duration-200 hover:shadow-md sm:p-6">
+      <h1 className="mb-4 border-b border-[#D9CFC7] pb-3 text-base font-semibold text-stone-800 sm:text-lg">
         {title}
       </h1>
-      <p>{children}</p>
+      <div className="text-stone-600">{children}</div>
     </div>
   );
 }

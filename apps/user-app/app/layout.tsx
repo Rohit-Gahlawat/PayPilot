@@ -32,7 +32,7 @@ export default async function RootLayout({
   const user = session?.user
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-[#F9F8F6] text-stone-800`}>
         <AppProvider>
           <Appbar user={user} onSignin={handleSignIn} onSignout={handleSignOut}></Appbar>
           {children}

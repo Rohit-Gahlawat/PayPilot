@@ -25,8 +25,8 @@ export const SidebarItem = ({
         justify-center md:justify-start
         transition-colors duration-200
         ${selected
-                    ? "bg-[#6a51a6]/10 text-[#6a51a6]"
-                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-800"
+                    ? "bg-[#C9B59C]/25 text-stone-800"
+                    : "text-stone-500 hover:bg-[#EFE9E3] hover:text-stone-800"
                 }
       `}
         >
@@ -34,7 +34,7 @@ export const SidebarItem = ({
             <span
                 className={`
           absolute left-0 top-1/2 -translate-y-1/2
-          h-6 w-1 rounded-r-full bg-[#6a51a6]
+          h-6 w-1 rounded-r-full bg-[#C9B59C]
           transition-opacity duration-200
           ${selected ? "opacity-100" : "opacity-0"}
         `}
@@ -44,7 +44,7 @@ export const SidebarItem = ({
             <span
                 className={`
           shrink-0 transition-colors duration-200
-          ${selected ? "text-[#6a51a6]" : "text-slate-400 group-hover:text-slate-700"}
+          ${selected ? "text-stone-800" : "text-stone-400 group-hover:text-stone-700"}
         `}
             >
                 {icon}

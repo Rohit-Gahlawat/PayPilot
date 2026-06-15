@@ -6,16 +6,16 @@ export default function Layout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen bg-slate-50">
+        <div className="flex min-h-screen bg-[#EFE9E3]">
             {/* Sidebar — sticky, collapses to an icon rail on mobile */}
             <aside
                 className="
-          sticky top-0 z-10
-          flex h-screen shrink-0 flex-col
+          sticky top-16 z-10
+          flex h-[calc(100vh-4rem)] shrink-0 flex-col
           w-16 md:w-60 lg:w-72
-          border-r border-slate-200 bg-white
+          border-r border-[#D9CFC7] bg-[#F9F8F6]
           px-2 md:px-4
-          pt-24 md:pt-28
+          pt-6
         "
             >
                 <nav className="flex flex-col gap-1">

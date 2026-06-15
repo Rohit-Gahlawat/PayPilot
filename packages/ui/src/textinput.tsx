@@ -10,7 +10,12 @@ export const TextInput = ({
     label: string;
 }) => {
     return <div className="pt-2">
-        <label className="block mb-2 text-sm font-medium text-gray-900">{label}</label>
-        <input onChange={(e) => onChange(e.target.value)} type="text" id="first_name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder={placeholder} />
+        <label className="mb-1.5 block text-sm font-medium text-stone-700">{label}</label>
+        <input
+            onChange={(e) => onChange(e.target.value)}
+            type="text"
+            className="block w-full rounded-xl border border-[#D9CFC7] bg-[#F9F8F6] px-3.5 py-2.5 text-sm text-stone-900 transition-colors duration-200 placeholder:text-stone-400 hover:border-[#C9B59C] focus:border-[#C9B59C] focus:outline-none focus:ring-2 focus:ring-[#C9B59C]/40"
+            placeholder={placeholder}
+        />
     </div>
 }
