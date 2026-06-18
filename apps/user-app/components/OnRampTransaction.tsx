@@ -1,7 +1,11 @@
 import { Card } from "@repo/ui/card"
 import { OnRampStatusType } from "@repo/db";
 
-
+const statusStyles: Record<string, string> = {
+    Success: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
+    Processing: "bg-amber-50 text-amber-700 ring-amber-600/20",
+    Failed: "bg-rose-50 text-rose-700 ring-rose-600/20"
+};
 
 export const OnRampTransactions = ({
     transactions
@@ -31,8 +35,13 @@ export const OnRampTransactions = ({
                         {t.time.toDateString()}
                     </div>
                 </div>
-                <div className="shrink-0 text-sm font-semibold tabular-nums text-stone-800">
-                    + Rs {t.amount / 100}
+                <div className="flex shrink-0 flex-col items-end gap-1">
+                    <div className="text-sm font-semibold tabular-nums text-stone-800">
+                        + Rs {t.amount / 100}
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${statusStyles[t.status] ?? "bg-stone-100 text-stone-600 ring-stone-600/20"}`}>
+                        {t.status}
+                    </span>
                 </div>
             </div>)}
         </div>
