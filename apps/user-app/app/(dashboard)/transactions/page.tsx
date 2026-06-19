@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { P2PTransactions } from "../../../components/P2PTransactions";
 import { TransactionsToggle } from "../../../components/TransactionsToggle";
+import { redirect } from "next/navigation";
 
 async function getOnRampTransactions() {
     const session = await auth();
@@ -25,7 +26,7 @@ async function getOnRampTransactions() {
 async function getP2PTransactions() {
     const session = await auth();
     const userId = session?.user?.id;
-    if (!userId) return [];
+    if (!userId) { return [] };
     const txns = await db.p2P.findMany({
         where: {
             OR: [
@@ -55,6 +56,10 @@ async function getP2PTransactions() {
 }
 
 export default async function TransactionsPage() {
+    const session = await auth();
+    if (!session?.user?.id) {
+        redirect("/signin")
+    }
     const bankTransactions = await getOnRampTransactions();
     const p2pTransactions = await getP2PTransactions();
 
