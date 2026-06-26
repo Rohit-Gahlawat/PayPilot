@@ -21,10 +21,18 @@ model User {
 }
 
 model Merchent {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  auth_type AuthType
+  id              Int               @id @default(autoincrement())
+  email           String            @unique
+  name            String?
+  auth_type       AuthType
+  MerchentBalance MerchentBalance[]
+}
+
+model MerchentBalance {
+  id         Int      @id @default(autoincrement())
+  merchentId Int      @unique
+  amount     Int
+  Merchent   Merchent @relation(fields: [merchentId], references: [id])
 }
 
 model Balance {
