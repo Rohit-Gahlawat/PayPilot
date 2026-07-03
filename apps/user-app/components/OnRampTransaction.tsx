@@ -1,6 +1,4 @@
 import { Card } from "@repo/ui/card"
-import { OnRampStatusType } from "@repo/db";
-
 
 const statusStyles: Record<string, string> = {
     Success: "bg-emerald-50 text-emerald-700 ring-emerald-600/20",
@@ -8,14 +6,15 @@ const statusStyles: Record<string, string> = {
     Failed: "bg-rose-50 text-rose-700 ring-rose-600/20"
 };
 
-export const OnRampTransactions = async ({
+export const OnRampTransactions = ({
     transactions
 }: {
     transactions: {
         time: Date,
         amount: number,
-        status: OnRampStatusType,
-        provider: string
+        status: string,
+        provider: string,
+        kind: "onramp" | "withdrawal"
     }[]
 }) => {
 
@@ -28,25 +27,28 @@ export const OnRampTransactions = async ({
     }
 
     return <Card title="Recent Transactions">
-        <div className="flex flex-col divide-y divide-[#D9CFC7]">
-            {transactions.map((t, i) => <div key={i} className="flex items-center justify-between gap-3 py-3">
-                <div className="min-w-0">
-                    <div className="text-sm font-medium text-stone-700">
-                        Received INR
+        <div className="flex flex-col divide-y divide-gray-200">
+            {transactions.map((t, i) => {
+                const isWithdrawal = t.kind === "withdrawal";
+                return <div key={i} className="flex items-center justify-between gap-3 py-3">
+                    <div className="min-w-0">
+                        <div className="text-sm font-medium text-stone-700">
+                            {isWithdrawal ? "Withdrawn to bank" : "Added to wallet"}
+                        </div>
+                        <div className="text-xs text-stone-400">
+                            {t.provider} · {t.time.toDateString()}
+                        </div>
                     </div>
-                    <div className="text-xs text-stone-400">
-                        {t.time.toDateString()}
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                        <div className={`text-sm font-semibold tabular-nums ${isWithdrawal ? "text-rose-600" : "text-emerald-600"}`}>
+                            {isWithdrawal ? "−" : "+"} Rs {t.amount / 100}
+                        </div>
+                        <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${statusStyles[t.status] ?? "bg-stone-100 text-stone-600 ring-stone-600/20"}`}>
+                            {t.status}
+                        </span>
                     </div>
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                    <div className="text-sm font-semibold tabular-nums text-stone-800">
-                        + Rs {t.amount / 100}
-                    </div>
-                    <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ring-1 ring-inset ${statusStyles[t.status] ?? "bg-stone-100 text-stone-600 ring-stone-600/20"}`}>
-                        {t.status}
-                    </span>
-                </div>
-            </div>)}
+            })}
         </div>
     </Card>
 }
