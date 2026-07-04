@@ -42,6 +42,10 @@ export async function handleSignIn(
 };
 
 export async function addMoney(amount: number, provider: string) {
+    if (!(amount > 0)) {
+        throw new Error("Please enter an amount greater than zero")
+    }
+    const amountInPaise = Math.round(amount * 100);
     const randomID = randomUUID();
     const token = `ID_${Date.now()}_${randomID}`;
     const session = await auth();
@@ -53,7 +57,7 @@ export async function addMoney(amount: number, provider: string) {
                 status: "Processing",
                 startTime: new Date(),
                 token: token,
-                amount: amount,
+                amount: amountInPaise,
                 provider: provider,
                 userId: session?.user?.id
 
@@ -64,6 +68,10 @@ export async function addMoney(amount: number, provider: string) {
 }
 
 export async function p2pMoney(number: string, amount: number) {
+    if (!(amount > 0)) {
+        throw new Error("Please enter an amount greater than zero")
+    }
+    const amountInPaise = Math.round(amount * 100);
 
     const session = await auth();
     const fromUser = session?.user?.id
@@ -86,7 +94,7 @@ export async function p2pMoney(number: string, amount: number) {
                 userId: fromUser
             }
         })
-        if (!fromBalance || fromBalance?.amount < amount) {
+        if (!fromBalance || fromBalance?.amount < amountInPaise) {
             throw new Error("Insufficient Balance")
         }
 
@@ -96,7 +104,7 @@ export async function p2pMoney(number: string, amount: number) {
             },
             data: {
                 amount: {
-                    decrement: amount
+                    decrement: amountInPaise
                 }
             }
         })
@@ -107,14 +115,14 @@ export async function p2pMoney(number: string, amount: number) {
             },
             data: {
                 amount: {
-                    increment: amount
+                    increment: amountInPaise
                 }
             }
         });
 
         await tx.p2P.create({
             data: {
-                amount,
+                amount: amountInPaise,
                 timestamp: new Date(),
                 fromUserId: fromUser,
                 toUserId: toUser.id
@@ -188,6 +196,10 @@ export async function SignUp({ phone, password }: UserSigninType) {
 
 
 export async function sendMerchant(id: number, amount: number) {
+    if (!(amount > 0)) {
+        throw new Error("Please enter an amount greater than zero")
+    }
+    const amountInPaise = Math.round(amount * 100);
 
     const session = await auth();
     const fromUser = session?.user?.id;
@@ -212,7 +224,7 @@ export async function sendMerchant(id: number, amount: number) {
                 userId: fromUser
             }
         });
-        if (!fromBalance || fromBalance?.amount < amount) {
+        if (!fromBalance || fromBalance?.amount < amountInPaise) {
             throw new Error("Insufficient Balance")
         };
 
@@ -222,7 +234,7 @@ export async function sendMerchant(id: number, amount: number) {
             },
             data: {
                 amount: {
-                    decrement: amount
+                    decrement: amountInPaise
                 }
             }
         });
@@ -233,13 +245,13 @@ export async function sendMerchant(id: number, amount: number) {
             },
             data: {
                 amount: {
-                    increment: amount
+                    increment: amountInPaise
                 }
             }
         });
         await tx.merchantTransaction.create({
             data: {
-                amount,
+                amount: amountInPaise,
                 timestamp: new Date(),
                 fromUserId: fromUser,
                 toUserId: toUser.id
@@ -253,6 +265,10 @@ export async function sendMerchant(id: number, amount: number) {
 
 
 export async function handleWithdrawals(amount: number, provider: string) {
+    if (!(amount > 0)) {
+        throw new Error("Please enter an amount greater than zero")
+    }
+    const amountInPaise = Math.round(amount * 100);
     const session = await auth();
     const userId = session?.user?.id
     if (!userId) {
@@ -267,15 +283,15 @@ export async function handleWithdrawals(amount: number, provider: string) {
             where: {
                 userId: userId,
                 amount: {
-                    gte: amount
+                    gte: amountInPaise
                 }
             },
             data: {
                 amount: {
-                    decrement: amount
+                    decrement: amountInPaise
                 },
                 locked: {
-                    increment: amount
+                    increment: amountInPaise
                 }
 
             }
@@ -286,7 +302,7 @@ export async function handleWithdrawals(amount: number, provider: string) {
         }
 
     } catch (e) {
-        return alert(e instanceof Error ? e.message : "something went wrong")
+        throw new Error(e instanceof Error ? e.message : "something went wrong")
     }
 
     await db.userWithdrawal.create({
@@ -296,7 +312,7 @@ export async function handleWithdrawals(amount: number, provider: string) {
             token: token,
             userId: userId,
             provider: provider,
-            amount: amount
+            amount: amountInPaise
         }
     });
     return token

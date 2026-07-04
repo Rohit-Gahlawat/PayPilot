@@ -27,6 +27,7 @@ export const AddMoney = () => {
     const [provider, setProvider] = useState("");
     const [amount, setAmount] = useState(0);
     const [mode, setMode] = useState<"add" | "withdraw">("add");
+    const [loading, setLoading] = useState(false);
 
     const tabBase = "flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200";
     const tabActive = "bg-white text-[#FF0052] shadow-sm";
@@ -40,14 +41,14 @@ export const AddMoney = () => {
                     onClick={() => setMode("add")}
                     className={`${tabBase} ${mode === "add" ? tabActive : tabInactive}`}
                 >
-                    Add Money
+                    Add money to wallet
                 </button>
                 <button
                     type="button"
                     onClick={() => setMode("withdraw")}
                     className={`${tabBase} ${mode === "withdraw" ? tabActive : tabInactive}`}
                 >
-                    Withdraw
+                    Withdraw to bank
                 </button>
             </div>
 
@@ -68,29 +69,48 @@ export const AddMoney = () => {
             <div className="pt-6">
                 {mode === "add" ? (
                     <Button onClick={async () => {
+                        if (!(amount > 0)) {
+                            return alert("Please enter an amount greater than zero")
+                        }
+                        setLoading(true)
                         try {
                             await addMoney(amount, provider)
                         } catch (e) {
+                            setLoading(false)
                             if (e instanceof Error) {
                                 return alert(e.message)
                             }
                         }
                         window.location.href = redirectUrl || ""
                     }}>
-                        Add Money
+                        {loading ? <span className="inline-flex items-center gap-2"><Spinner />Processing…</span> : "Add Money"}
                     </Button>
                 ) : (
                     <Button onClick={async () => {
+                        if (!(amount > 0)) {
+                            return alert("Please enter an amount greater than zero")
+                        }
+                        setLoading(true)
                         try { await handleWithdrawals(amount, provider) }
                         catch (e) {
+                            setLoading(false)
                             alert(e instanceof Error ? e.message : "something went wrong")
                         }
-
+                        window.location.href = redirectUrl || ""
                     }}>
-                        Withdraw
+                        {loading ? <span className="inline-flex items-center gap-2"><Spinner />Processing…</span> : "Withdraw"}
                     </Button>
                 )}
             </div>
         </div>
     </Card>
+}
+
+function Spinner() {
+    return (
+        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.4 0 0 5.4 0 12h4z" />
+        </svg>
+    );
 }
