@@ -14,10 +14,10 @@ export default async function DashboardPage() {
             <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
                 <div className="max-w-md text-center md:text-left">
                     <span className="inline-flex items-center rounded-full bg-[#FF0052]/10 px-3 py-1 text-xs font-medium text-[#FF0052]">
-                        mymoney wallet
+                        LaRokda wallet
                     </span>
                     <h1 className="mt-3 text-3xl font-bold tracking-tight text-stone-800 sm:text-4xl">
-                        Welcome back {name}
+                        Dashboard
                     </h1>
                     <p className="mt-3 text-sm text-stone-500 sm:text-base">
                         Send money to anyone, top up your wallet, and track every
@@ -25,7 +25,7 @@ export default async function DashboardPage() {
                     </p>
                     <div className="mt-6 flex flex-wrap justify-center gap-3 md:justify-start">
                         <Link
-                            href="/p2p"
+                            href="/send"
                             className="rounded-xl bg-[#FF0052] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-95 active:brightness-90"
                         >
                             Send Money
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
 
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
             <ActionCard
-                href="/p2p"
+                href="/send"
                 title="Send Money"
                 description="Transfer instantly to any mobile number."
                 icon={<SendIcon />}
@@ -61,7 +61,7 @@ export default async function DashboardPage() {
             <ActionCard
                 href="/transactions"
                 title="Transactions"
-                description="Review your bank and P2P activity."
+                description="Review your bank and peer-to-peer activity."
                 icon={<HistoryIcon />}
             />
         </div>
