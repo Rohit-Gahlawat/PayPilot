@@ -29,19 +29,36 @@ async function getOnRampTransactions() {
     if (!userId) {
         return []
     }
-    const txns = await db.onRampTransaction.findMany({
+    const onramps = await db.onRampTransaction.findMany({
         where: {
             userId: userId
         }
-
+    });
+    const withdrawals = await db.userWithdrawal.findMany({
+        where: {
+            userId: userId
+        }
     });
 
-    return txns.map(t => ({
-        time: t.startTime,
-        amount: t.amount,
-        status: t.status,
-        provider: t.provider
-    }))
+    const combined = [
+        ...onramps.map(t => ({
+            time: t.startTime,
+            amount: t.amount,
+            status: t.status as string,
+            provider: t.provider,
+            kind: "onramp" as const
+        })),
+        ...withdrawals.map(t => ({
+            time: t.startTime,
+            amount: t.amount,
+            status: t.status as string,
+            provider: t.provider,
+            kind: "withdrawal" as const
+        }))
+    ];
+
+    combined.sort((a, b) => b.time.getTime() - a.time.getTime());
+    return combined;
 }
 
 export default async function TransferPage() {
