@@ -1,0 +1,11 @@
+{
+  "name": "bank-server",
+  "type": "module",
+  "scripts": {
+    "build": "node esbuild.config.js",
+    "dev": "node esbuild.config.js && node dist/index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
